@@ -81,6 +81,8 @@ void cmd_help(void) {
 	cmd_ls();
 }
 
+extern numvar symval;
+char find_user_function(char *id);
 
 void prompt(void) {
 char buf[IDLEN+1];
@@ -91,6 +93,7 @@ char buf[IDLEN+1];
 	// Run the script named "prompt" if there is one else print "> "
 	strncpy_P(buf, getmsg(M_promptid), IDLEN);	// get the name "prompt" in our cmd buf
 	if (findscript(buf)) doCommand(buf);
+	else if (find_user_function(buf)) dofunctioncall(symval);
 	else msgp(M_prompt);							// else print default prompt
 #endif
 }
