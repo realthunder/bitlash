@@ -94,7 +94,9 @@
 // cost: ~400 bytes flash
 //#define PARSER_TRACE 1
 
-
+#ifndef BITLASH_PROMPT
+#define BITLASH_PROMPT "> "
+#endif
 
 ////////////////////////////////////////////////////
 //
