@@ -33,6 +33,14 @@
 	OTHER DEALINGS IN THE SOFTWARE.
 
 ***/
+#ifdef BITLASH_INTERNAL
+// Un-comment the line below to expose all the internals
+// of the Bitlash core to your sketch.
+//
+#include "src/bitlash.h"
+
+#else //BITLASH_INTERNAL
+
 #if defined(ARDUINO) && ARDUINO >= 100
 	#include "Arduino.h"
 	#define prog_char char PROGMEM
@@ -40,12 +48,6 @@
 #else
 	#include "WProgram.h"
 #endif
-
-
-// Un-comment the line below to expose all the internals
-// of the Bitlash core to your sketch.
-//
-//#include "src/bitlash.h"
 
 ///////////////////////
 //	Start Bitlash, and give it cycles to do stuff
@@ -58,6 +60,7 @@ void runBitlash(void);					// call this in loop(), frequently
 typedef long int numvar;					// bitlash returns things of type numvar
 typedef unsigned long int unumvar;			// sometimes unsigned interpretation is best (like millis)
 
+#endif
 
 ///////////////////////
 //	Pass a command to Bitlash for interpretation
