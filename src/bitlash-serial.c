@@ -151,7 +151,13 @@ void resetOutputHandler(void) {
 // this is a pinchpoint on output.  all output funnels through spb.
 //
 #if defined(HARDWARE_SERIAL_TX) || defined(SOFTWARE_SERIAL_TX)
+
 void spb(char c) {
+#ifdef BITLASH_TXEN
+    extern byte BITLASH_TXEN;
+    if(!BITLASH_TXEN) return;
+#endif
+
 #ifdef HARDWARE_SERIAL_TX
 	if (outpin == DEFAULT_OUTPIN) { 
 
