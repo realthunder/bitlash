@@ -40,7 +40,8 @@
 #define UNIX_BUILD 1
 #elif defined(__SAM3X8E__)
 #define ARM_BUILD 1
-#elif (defined(__MK20DX128__) || defined(__MK20DX256__)) && defined (CORE_TEENSY)
+#elif (defined(__MK20DX128__) || defined(__MK20DX256__) || \
+       defined(__MK66FX1M0__) || defined(__MK64FX512__) || defined(__MKL26Z64__)) && defined (CORE_TEENSY)
   // Teensy 3
   #define ARM_BUILD 2
 #elif defined(PART_LM4F120H5QR) //support Energia.nu - Stellaris Launchpad / Tiva C Series 
@@ -417,19 +418,22 @@ unsigned long millis(void);
 //
 //	ARM BUILD
 #if defined(ARM_BUILD)
- #define prog_char char
-#define prog_uchar byte
 #define PROGMEM
-#define pgm_read_byte(b) (*(char *)(b))
-#define pgm_read_word(b) (*(int *)(b))
-#define strncpy_P strncpy
-#define strcmp_P strcmp
-#define strlen_P strlen
+#   if ARM_BUILD!=2
+#       define prog_char char
+#       define prog_uchar byte
+#       define pgm_read_byte(b) (*(char *)(b))
+#       define pgm_read_word(b) (*(int *)(b))
+#       define strncpy_P strncpy
+#       define strcmp_P strcmp
+#       define strlen_P strlen
+#   endif
 #if ARM_BUILD==1
   #define E2END 4096
-#else
+#elif ARM_BUILD==2
+#   include <avr/eeprom.h>
   // Teensy 3
-  #define E2END 2048
+  // #define E2END 2048
 #endif
 
 #endif
@@ -722,7 +726,7 @@ extern numvar symval;		// value of current numeric expression
 
 #define USE_GPIORS defined(AVR_BUILD)
 
-#ifndef GPIOR0 || GPIOR1
+#if !defined(GPIOR0) || !defined(GPIOR1)
 	#undef USE_GPIORS
 #endif
 #if (defined USE_GPIORS)
